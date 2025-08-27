@@ -1,0 +1,215 @@
+import streamlit as st
+from PIL import Image
+import base64
+
+# -----------------------------
+# Page Configuration
+# -----------------------------
+st.set_page_config(
+    page_title="Hemasree Gogudupalem | Portfolio",
+    page_icon="🎯",
+    layout="centered",
+    initial_sidebar_state="expanded",
+)
+
+# -----------------------------
+# Load & Encode Image
+# -----------------------------
+def get_img_as_base64(file):
+    try:
+        with open(file, "rb") as f:
+            data = f.read()
+        return base64.b64encode(data).decode()
+    except Exception as e:
+        st.warning(f"Image not found: {file}")
+        return ""
+
+img_path = "assets/mine_itsmypic.jpg"
+img = get_img_as_base64(img_path)
+
+# -----------------------------
+# Custom CSS for Background & Styling
+# -----------------------------
+if img:
+    page_bg_img = f'''
+    <style>
+    [data-testid="stAppViewContainer"] > .main {{
+        background-image: url("data:image/jpg;base64,{img}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    [data-testid="stSidebar"] > div:first-child {{
+        background-image: url("data:image/jpg;base64,{img}");
+        background-position: center;
+        background-size: cover;
+    }}
+    </style>
+    '''
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# Add transparent overlay to improve text readability
+st.markdown(
+    """
+    <style>
+    .main .block-container {
+        background-color: rgba(255, 255, 255, 0.93);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# -----------------------------
+# Sidebar Navigation
+# -----------------------------
+with st.sidebar:
+    st.title("🎯 Navigation")
+    page = st.radio("Go to", ["Home", "Projects", "Skills", "Contact"])
+
+# -----------------------------
+# HOME PAGE
+# -----------------------------
+if page == "Home":
+    st.title("👋 Hi, I'm Gogudupalem Hemasree")
+    
+    # Display profile image
+    try:
+        st.image("assets/mine_itsmypic.jpg", width=300, caption="Photo of Me")
+    except:
+        st.warning("Profile image not found.")
+
+    st.markdown("""
+    ### 🧑‍💻 Java Programmer | Python Developer | ML Enthusiast  
+    I love building tools that make data understandable and actionable.  
+    Passionate about AI, automation, and open-source.
+
+    - 📍 Computer Science Student at VIT-AP University
+    - 📅 Open to Internships & Full-Time Roles
+    - 🎓 Pursuing B.Tech in Computer Science
+    """)
+
+    # Download Resume Button
+    try:
+        with open("Hemasree_Resume(updated_59).pdf", "rb") as pdf_file:
+            PDFbyte = pdf_file.read()
+        st.download_button(
+            label="📄 Download My Resume",
+            data=PDFbyte,
+            file_name="Hemasree_Resume.pdf",
+            mime="application/pdf"
+        )
+    except Exception as e:
+        st.warning("Resume not found. Make sure `Hemasree_Resume(updated_59).pdf` is in the root folder.")
+
+# -----------------------------
+# PROJECTS PAGE
+# -----------------------------
+elif page == "Projects":
+    st.title("🚀 My Projects")
+
+    st.markdown("### 1. Maternal Health Tracker")
+    st.write("""
+    Built using Streamlit, this app empowers women — especially in low-resource or rural areas — with timely, accurate, and private pregnancy tracking.
+    - **Tech**: Pandas, Python, Streamlit
+    - [GitHub Link](https://github.com/Hemasreeg/maternal_health_app)
+    """)
+    st.markdown("---")
+
+    st.markdown("### 2. RateMyCourse")
+    st.write("""
+    A platform that gathers courses from various online learning websites, providing a comprehensive list of options all in one place.
+    - **Tech**: HTML, CSS, JavaScript, Flask
+    - [GitHub Link](https://github.com/Hemasreeg/RateMyCourse)
+    """)
+    st.markdown("---")
+
+    st.markdown("### 3. QR Legibility and URL Analysis")
+    st.write("""
+    A Deep Learning Framework to Detect Phishing URLs & Malicious APKs using advanced models.
+    - **Tech**: CNN, BERT, Deep Learning
+    - [GitHub Link](https://github.com/Hemasreeg/qr_legibility_and_url_analysis)
+    """)
+    st.markdown("---")
+
+    st.markdown("### 4. Non-Invasive Glucometer")
+    st.write("""
+    Detects glucose levels without pricking blood using IR rays passed through human tissue.
+    - **Tech**: Arduino, Python
+    - [GitHub Link](https://github.com/Hemasreeg/non_invasive_glucometer)
+    """)
+    st.markdown("---")
+
+    st.markdown("### 5. Brain Tumor Identification")
+    st.write("""
+    Detects brain tumors using CNN and Fuzzy Transform for improved accuracy.
+    - **Tech**: CNN, Fuzzy Transform, Python
+    - [GitHub Link](https://github.com/Hemasreeg/brain-tumor-identification)
+    """)
+
+# -----------------------------
+# SKILLS PAGE
+# -----------------------------
+elif page == "Skills":
+    st.title("🔧 Skills & Tools")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("### Programming")
+        st.progress(85)  # Python
+        st.write("Python (85%)")
+        st.progress(90)  # SQL
+        st.write("SQL (90%)")
+        st.progress(80)  # Java
+        st.write("Java (80%)")
+
+    with col2:
+        st.markdown("### Machine Learning")
+        st.progress(85)  # Pandas/Numpy
+        st.write("Pandas / NumPy (85%)")
+        st.progress(75)  # Scikit-learn
+        st.write("Scikit-learn (75%)")
+
+    st.markdown("### Frameworks & Tools")
+    st.write("Streamlit, Git, Google Colab, VS Code, Jupyter Notebook, Arduino")
+
+# -----------------------------
+# CONTACT PAGE
+# -----------------------------
+elif page == "Contact":
+    st.title("📬 Let's Connect!")
+
+    st.write("Feel free to reach out via:")
+
+    st.markdown("""
+    - 📧 **Email**: [hemasreegogudu149@gmail.com](mailto:hemasreegogudu149@gmail.com)
+    - 🔗 **LinkedIn**: [linkedin.com/in/hemasree-gogudupalem-779523275](https://www.linkedin.com/in/hemasree-gogudupalem-779523275/)
+    - 🐙 **GitHub**: [github.com/Hemasreeg](https://github.com/Hemasreeg)
+    """)
+
+    st.markdown("---")
+    st.markdown("### ✉️ Send Me a Message")
+    with st.form("contact_form"):
+        name = st.text_input("Your Name")
+        email = st.text_input("Your Email")
+        message = st.text_area("Your Message")
+        submitted = st.form_submit_button("Send")
+        if submitted:
+            if name.strip() == "" or message.strip() == "":
+                st.error("Please fill in all fields!")
+            else:
+                st.success(f"✅ Thanks, {name}! I'll get back to you soon.")
+
+# -----------------------------
+# Footer
+# -----------------------------
+st.markdown("---")
+st.markdown("### © 2025 Hemasree Gogudupalem")
+st.markdown("Built with ❤️ using Streamlit")
